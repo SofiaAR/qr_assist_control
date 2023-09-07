@@ -1,19 +1,16 @@
 package qr.entities;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
-
-import java.math.BigDecimal;
 
 @Entity
-@Table(name= "cuentas")
+@Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String user;
+    private String userName;
     private String password;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "type_account_id")
@@ -35,12 +32,12 @@ public class Account {
         this.name = name;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

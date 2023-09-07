@@ -3,11 +3,9 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "asistencias")
 public class WorkerAssistance {
 
     @Id
@@ -15,12 +13,11 @@ public class WorkerAssistance {
     private Long id;
     private String rutworker;
     private Integer numdocument;
-    private Date daterecord;
+    private LocalDate daterecord;
     private Integer day;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_type_id")
     private RegistrationType registrationType;
-
     public Long getId() {
         return id;
     }
@@ -45,11 +42,11 @@ public class WorkerAssistance {
         this.numdocument = numdocument;
     }
 
-    public Date getDaterecord() {
+    public LocalDate getDaterecord() {
         return daterecord;
     }
 
-    public void setDaterecord(Date daterecord) {
+    public void setDaterecord(LocalDate daterecord) {
         this.daterecord = daterecord;
     }
 

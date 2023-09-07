@@ -3,11 +3,9 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "calhorasextras")
 public class OverTime {
 
     @Id
@@ -15,7 +13,7 @@ public class OverTime {
     private Long id;
     private String rutworker;
     private Integer documentnum;
-    private Date date;
+    private LocalDate date;
     private Float amountovertime;
 
     public Long getId() {
@@ -42,11 +40,11 @@ public class OverTime {
         this.documentnum = documentnum;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

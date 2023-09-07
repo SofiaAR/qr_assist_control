@@ -1,28 +1,22 @@
-package qr.entities;
+package qr.Dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import qr.entities.Department;
+import qr.entities.Rol;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-
-@Entity
-@Table(name = "user_app")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserDto {
     private Long id;
-    @Column(unique = true)
     private String rut;
     private Integer numdocument;
     private String name;
     private String lastname;
-    @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_type_id")
     private Rol rol;
-    private LocalDate contractdate;
-    @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id")
+    private Date contractdate;
     private Department iddepartment;
 
     public Long getId() {
@@ -65,20 +59,20 @@ public class User {
         this.lastname = lastname;
     }
 
-    public LocalDate getContractdate() {
-        return contractdate;
-    }
-
-    public void setContractdate(LocalDate contractdate) {
-        this.contractdate = contractdate;
-    }
-
     public Rol getRol() {
         return rol;
     }
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Date getContractdate() {
+        return contractdate;
+    }
+
+    public void setContractdate(Date contractdate) {
+        this.contractdate = contractdate;
     }
 
     public Department getIddepartment() {

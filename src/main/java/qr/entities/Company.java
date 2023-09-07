@@ -1,13 +1,9 @@
 package qr.entities;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
-
-import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "empresa")
 public class Company {
 
     @Id

@@ -3,11 +3,9 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "historicoasist")
 public class AssistHistory {
 
     @Id
@@ -15,8 +13,8 @@ public class AssistHistory {
     private Long id;
     private String workerrut;
     private Integer workerdocument;
-    private Date indate;
-    private Date outdate;
+    private LocalDate indate;
+    private LocalDate outdate;
     private Float overtime;
 
     public Long getId() {
@@ -44,19 +42,35 @@ public class AssistHistory {
         this.workerdocument = numerodocumento;
     }
 
-    public Date getIndate() {
+    public String getWorkerrut() {
+        return workerrut;
+    }
+
+    public void setWorkerrut(String workerrut) {
+        this.workerrut = workerrut;
+    }
+
+    public Integer getWorkerdocument() {
+        return workerdocument;
+    }
+
+    public void setWorkerdocument(Integer workerdocument) {
+        this.workerdocument = workerdocument;
+    }
+
+    public LocalDate getIndate() {
         return indate;
     }
 
-    public void setIndate(Date indate) {
+    public void setIndate(LocalDate indate) {
         this.indate = indate;
     }
 
-    public Date getOutdate() {
+    public LocalDate getOutdate() {
         return outdate;
     }
 
-    public void setOutdate(Date outdate) {
+    public void setOutdate(LocalDate outdate) {
         this.outdate = outdate;
     }
 

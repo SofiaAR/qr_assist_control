@@ -1,19 +1,19 @@
 package qr.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import javax.xml.crypto.Data;
-import java.math.BigDecimal;
+import java.time.LocalDate;
+
 
 @Entity
-@Table(name = "registroerrores")
 public class BugRecord {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String bugdescription;
-    private Data bugdate;
+    private LocalDate bugdate;
 
     public Long getId() {
         return id;
@@ -31,11 +31,12 @@ public class BugRecord {
         this.bugdescription = bugdescription;
     }
 
-    public Data getBugdate() {
+    public LocalDate getBugdate() {
         return bugdate;
     }
 
-    public void setBugdate(Data bugdate) {
+    public void setBugdate(LocalDate bugdate) {
         this.bugdate = bugdate;
     }
+
 }

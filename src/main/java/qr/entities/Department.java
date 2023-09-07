@@ -2,10 +2,8 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 
 @Entity
-@Table(name = "departamento")
 public class Department {
 
     @Id
