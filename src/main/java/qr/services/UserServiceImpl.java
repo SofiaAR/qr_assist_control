@@ -1,5 +1,6 @@
 package qr.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qr.Dtos.UserDto;
@@ -13,19 +14,19 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public UserDto findById(Long id){
-       Optional<User> userEntity = userRepository.findById(id);
-       if (userEntity.isPresent()){
-           User user = userEntity.get();
-           return UsermapperDto.TransformEntityToDto(user);
-       }
-       else {
-           return null;
-       }
+    public UserDto findById(Long id) {
+        Optional<User> userEntity = userRepository.findById(id);
+        if (userEntity.isPresent()) {
+            User user = userEntity.get();
+            return UsermapperDto.TransformEntityToDto(user);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -34,8 +35,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto save(UserDto newUser) {
-        return null;
+
+    public UserDto save(UserDto userDto) {
+        User user = new User();
+
+        user.setRut(userDto.getRut());
+        user.setNumdocument(userDto.getNumdocument());
+        user.setName(userDto.getName());
+        user.setLastname(userDto.getLastname());
+        user.setRol(userDto.getRol());
+        user.setContractdate(userDto.getContractdate());
+        user.setIddepartment(userDto.getIddepartment());
+
+        /*
+        Aqui el metodo save esta guardando el objeto user, y esta retornando una nuevo objeto que tiene los mismos datos del objeto user pero con el nuevo id
+         */
+        User userSaved = userRepository.save(user);
+
+        userDto.setId(userSaved.getId());
+
+        return userDto;
     }
 
     @Override
