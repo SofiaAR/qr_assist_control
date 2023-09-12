@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import qr.entities.Department;
 import qr.entities.Rol;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class UserDto {
@@ -16,7 +17,7 @@ public class UserDto {
     private String name;
     private String lastname;
     private Rol rol;
-    private Date contractdate;
+    private LocalDate contractdate;
     private Department iddepartment;
 
     public Long getId() {
@@ -67,11 +68,11 @@ public class UserDto {
         this.rol = rol;
     }
 
-    public Date getContractdate() {
+    public LocalDate getContractdate() {
         return contractdate;
     }
 
-    public void setContractdate(Date contractdate) {
+    public void setContractdate(LocalDate contractdate) {
         this.contractdate = contractdate;
     }
 
