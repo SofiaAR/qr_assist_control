@@ -1,24 +1,19 @@
 package qr.Dtos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import qr.entities.Department;
-import qr.entities.Rol;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class UserDto {
     private Long id;
     private String rut;
-    private Integer numdocument;
+    private Integer numDocument;
     private String name;
-    private String lastname;
-    private Rol rol;
-    private LocalDate contractdate;
-    private Department iddepartment;
+    private String lastName;
+    private RolDto rolDto;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate contractDate;
+    private DepartmentDto departmentDto;
 
     public Long getId() {
         return id;
@@ -36,12 +31,12 @@ public class UserDto {
         this.rut = rut;
     }
 
-    public Integer getNumdocument() {
-        return numdocument;
+    public Integer getNumDocument() {
+        return numDocument;
     }
 
-    public void setNumdocument(Integer numdocument) {
-        this.numdocument = numdocument;
+    public void setNumDocument(Integer numDocument) {
+        this.numDocument = numDocument;
     }
 
     public String getName() {
@@ -52,35 +47,36 @@ public class UserDto {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public Rol getRol() {
-        return rol;
+    public LocalDate getContractDate() {
+        return contractDate;
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public void setContractDate(LocalDate contractDate) {
+        this.contractDate = contractDate;
     }
 
-    public LocalDate getContractdate() {
-        return contractdate;
+    public RolDto getRolDto() {
+        return rolDto;
     }
 
-    public void setContractdate(LocalDate contractdate) {
-        this.contractdate = contractdate;
+    public void setRolDto(RolDto rolDto) {
+        this.rolDto = rolDto;
     }
 
-    public Department getIddepartment() {
-        return iddepartment;
+    public DepartmentDto getDepartmentDto() {
+        return departmentDto;
     }
 
-    public void setIddepartment(Department iddepartment) {
-        this.iddepartment = iddepartment;
+    public void setDepartmentDto(DepartmentDto departmentDto) {
+        this.departmentDto = departmentDto;
     }
 }
+

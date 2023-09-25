@@ -23,7 +23,7 @@ public class User {
     private LocalDate contractdate;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
-    private Department iddepartment;
+    private Department department;
 
     public Long getId() {
         return id;
@@ -81,11 +81,11 @@ public class User {
         this.rol = rol;
     }
 
-    public Department getIddepartment() {
-        return iddepartment;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setIddepartment(Department iddepartment) {
-        this.iddepartment = iddepartment;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
