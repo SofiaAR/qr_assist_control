@@ -1,0 +1,97 @@
+package qr.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import qr.Dtos.UserDto;
+import qr.entities.User;
+import qr.mapper.MapperDto;
+import qr.repositories.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private RolService rolService;
+
+    @Override
+    public UserDto findById(Long id) {
+        Optional<User> userEntity = userRepository.findById(id);
+        if (userEntity.isPresent()) {
+            User user = userEntity.get();
+            return MapperDto.TransformUserEntityToUserDto(user);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<UserDto> FindAll() {
+        return null;
+    }
+
+    @Override
+
+    public UserDto save(UserDto userDto) {
+        User user = new User();
+
+        user.setRut(userDto.getRut());
+        user.setNumdocument(userDto.getNumDocument());
+        user.setName(userDto.getName());
+        user.setLastname(userDto.getLastName());
+        user.setRol(rolService.findById(userDto.getRolDto().getId()));
+        user.setContractdate(userDto.getContractDate());
+        user.setDepartment(departmentService.findById(userDto.getDepartmentDto().getId()));
+
+        /*
+        Aqui el metodo save esta guardando el objeto user, y esta retornando una nuevo objeto que tiene los mismos datos del objeto user pero con el nuevo id
+         */
+        User userSaved = userRepository.save(user);
+
+        userDto.setId(userSaved.getId());
+
+        return userDto;
+    }
+
+    @Override
+    public void update(UserDto dataForUpdate) {
+
+        //Ejecutar metodo del repositorio de ususario para obtener un ususario a traves de su id
+        Optional<User> optionalUser = userRepository.findById(dataForUpdate.getId());
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            user.setName(dataForUpdate.getName());
+            user.setRut(dataForUpdate.getRut());
+            user.setNumdocument(dataForUpdate.getNumDocument());
+            user.setLastname(dataForUpdate.getLastName());
+            //user.setRol(dataForUpdate.getRolDto());
+            //user.setDepartment(dataForUpdate.getDepartmentDto());
+
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        //se declara variable de tipo optional se carga con los datos que retorna el metodo finbyid
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = new User();
+            user = optionalUser.get();
+            userRepository.delete(user);
+        }
+    }
+
+
+}
+
