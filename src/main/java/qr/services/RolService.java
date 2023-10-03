@@ -1,8 +1,6 @@
 package qr.services;
 
-import qr.Dtos.DepartmentDto;
-import qr.Dtos.RolDto;
-import qr.entities.Department;
+import qr.dtos.RolDto;
 import qr.entities.Rol;
 
 public interface RolService {

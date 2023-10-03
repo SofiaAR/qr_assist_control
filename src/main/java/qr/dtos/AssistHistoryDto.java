@@ -1,15 +1,9 @@
-package qr.entities;
-
-
-import jakarta.persistence.*;
+package qr.dtos;
 
 import java.time.LocalDate;
 
-@Entity
-public class AssistHistory {
+public class AssistHistoryDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String workerRut;
     private Integer workerDocument;
@@ -18,28 +12,11 @@ public class AssistHistory {
     private Float overTime;
 
     public Long getId() {
-
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRuttrabajador() {
-        return workerRut;
-    }
-
-    public void setRuttrabajador(String ruttrabajador) {
-        this.workerRut = ruttrabajador;
-    }
-
-    public Integer getNumerodocumento() {
-        return workerDocument;
-    }
-
-    public void setNumerodocumento(Integer numerodocumento) {
-        this.workerDocument = numerodocumento;
     }
 
     public String getWorkerRut() {

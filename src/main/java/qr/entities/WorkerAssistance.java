@@ -4,6 +4,7 @@ package qr.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class WorkerAssistance {
@@ -11,13 +12,14 @@ public class WorkerAssistance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String rutworker;
-    private Integer numdocument;
-    private LocalDate daterecord;
-    private Integer day;
+    private LocalDateTime dateRecord;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_type_id")
     private RegistrationType registrationType;
+
     public Long getId() {
         return id;
     }
@@ -26,36 +28,20 @@ public class WorkerAssistance {
         this.id = id;
     }
 
-    public String getRutworker() {
-        return rutworker;
+    public LocalDateTime getDateRecord() {
+        return dateRecord;
     }
 
-    public void setRutworker(String rutworker) {
-        this.rutworker = rutworker;
+    public void setDateRecord(LocalDateTime dateRecord) {
+        this.dateRecord = dateRecord;
     }
 
-    public Integer getNumdocument() {
-        return numdocument;
+    public User getUser() {
+        return user;
     }
 
-    public void setNumdocument(Integer numdocument) {
-        this.numdocument = numdocument;
-    }
-
-    public LocalDate getDaterecord() {
-        return daterecord;
-    }
-
-    public void setDaterecord(LocalDate daterecord) {
-        this.daterecord = daterecord;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public RegistrationType getRegistrationType() {

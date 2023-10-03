@@ -1,15 +1,8 @@
-package qr.entities;
-
-
-import jakarta.persistence.*;
+package qr.dtos;
 
 import java.time.LocalDate;
 
-@Entity
-public class OverTime {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class OvertimeDto {
     private Long id;
     private String rutWorker;
     private Integer documentNum;

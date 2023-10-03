@@ -14,7 +14,7 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String rut;
-    private Integer numdocument;
+    private Integer documentNumber;
     private String name;
     private String lastname;
     @ManyToOne( fetch = FetchType.LAZY)
@@ -24,6 +24,7 @@ public class User {
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+    private boolean active = true;
 
     public Long getId() {
         return id;
@@ -41,12 +42,12 @@ public class User {
         this.rut = rut;
     }
 
-    public Integer getNumdocument() {
-        return numdocument;
+    public Integer getDocumentNumber() {
+        return documentNumber;
     }
 
-    public void setNumdocument(Integer numdocument) {
-        this.numdocument = numdocument;
+    public void setDocumentNumber(Integer documentNumber) {
+        this.documentNumber = documentNumber;
     }
 
     public String getName() {
@@ -87,5 +88,13 @@ public class User {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

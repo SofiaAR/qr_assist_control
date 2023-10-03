@@ -4,8 +4,7 @@ package qr.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import qr.Dtos.UserDto;
-import qr.entities.User;
+import qr.dtos.UserDto;
 import qr.services.UserService;
 
 @RestController
@@ -16,8 +15,9 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> findById(@PathVariable Long userId){
-        return ResponseEntity.ok(userService.findById(userId));
+        return ResponseEntity.ok(userService.findByIdDto(userId));
     }
+
 
     @PostMapping
    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){

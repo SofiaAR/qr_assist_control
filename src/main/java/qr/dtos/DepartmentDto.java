@@ -1,19 +1,12 @@
-package qr.entities;
+package qr.dtos;
 
-import jakarta.persistence.*;
+import qr.entities.Company;
 
-
-@Entity
-public class Department {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class DepartmentDto {
     private Long id;
     private String name;
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "company_id")
-    private Company company;
-    private boolean active = true;
+    private CompanyDto companyDto;
+    private boolean active;
 
     public Long getId() {
         return id;
@@ -31,12 +24,12 @@ public class Department {
         this.name = name;
     }
 
-    public Company getCompany() {
-        return company;
+    public CompanyDto getCompanyDto() {
+        return companyDto;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyDto(CompanyDto companyDto) {
+        this.companyDto = companyDto;
     }
 
     public boolean isActive() {
@@ -47,3 +40,7 @@ public class Department {
         this.active = active;
     }
 }
+
+
+
+

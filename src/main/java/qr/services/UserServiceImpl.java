@@ -2,7 +2,7 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.Dtos.UserDto;
+import qr.dtos.UserDto;
 import qr.entities.User;
 import qr.mapper.MapperDto;
 import qr.repositories.UserRepository;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private RolService rolService;
 
     @Override
-    public UserDto findById(Long id) {
+    public UserDto findByIdDto(Long id) {
         Optional<User> userEntity = userRepository.findById(id);
         if (userEntity.isPresent()) {
             User user = userEntity.get();
@@ -30,6 +30,27 @@ public class UserServiceImpl implements UserService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public User findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public UserDto findByRutDto(String rut){
+        Optional<User> userRut = userRepository.findByRut(rut);
+        if (userRut.isPresent()){
+            User user = userRut.get();
+            return MapperDto.TransformUserEntityToUserDto(user);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public User findByRut(String rut) {
+        return null;
     }
 
     @Override
@@ -43,7 +64,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         user.setRut(userDto.getRut());
-        user.setNumdocument(userDto.getNumDocument());
+        user.setDocumentNumber(userDto.getNumDocument());
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
         user.setRol(rolService.findById(userDto.getRolDto().getId()));
@@ -71,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
             user.setName(dataForUpdate.getName());
             user.setRut(dataForUpdate.getRut());
-            user.setNumdocument(dataForUpdate.getNumDocument());
+            user.setDocumentNumber(dataForUpdate.getNumDocument());
             user.setLastname(dataForUpdate.getLastName());
             //user.setRol(dataForUpdate.getRolDto());
             //user.setDepartment(dataForUpdate.getDepartmentDto());
