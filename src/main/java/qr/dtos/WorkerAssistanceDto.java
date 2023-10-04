@@ -1,14 +1,8 @@
 package qr.dtos;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import qr.entities.RegistrationType;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class WorkAssistanceDto {
+public class WorkerAssistanceDto {
 
     private Long id;
     private LocalDateTime dateRecord;

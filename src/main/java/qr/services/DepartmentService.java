@@ -5,6 +5,7 @@ import qr.dtos.UserDto;
 import qr.entities.Department;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DepartmentService {
 
@@ -19,6 +20,11 @@ public interface DepartmentService {
     void update (DepartmentDto updateDepartment);
 
     void delete(Long id);
+
+
+
+
+
 
 
 }

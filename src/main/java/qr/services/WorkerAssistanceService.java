@@ -1,10 +1,10 @@
 package qr.services;
 
-import qr.dtos.WorkAssistanceDto;
+import qr.dtos.WorkerAssistanceDto;
 
 public interface WorkerAssistanceService {
 
-    WorkAssistanceDto save(String rut, Long registrationTypeId);
+    WorkerAssistanceDto save(String rut, Long registrationTypeId);
 
 
 }

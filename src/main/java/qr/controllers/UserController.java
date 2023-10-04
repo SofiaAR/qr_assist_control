@@ -8,7 +8,7 @@ import qr.dtos.UserDto;
 import qr.services.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -19,21 +19,32 @@ public class UserController {
     }
 
 
-    @PostMapping
+    @PostMapping("/save")
    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.save(userDto));
    }
 
-   @PutMapping
+   @PutMapping("/update")
    public ResponseEntity<Void> update(@RequestBody UserDto userDto){
 
         userService.update(userDto);
         return ResponseEntity.ok().build();
    }
 
-   @DeleteMapping("/{id}")
+   @DeleteMapping("/delete/{id}")
    public ResponseEntity<Void> delete(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok().build();
    }
+
+   @PutMapping("/deactivate/{userId}")
+   public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
+        try{
+            userService.deactivateUser(userId);
+            return ResponseEntity.ok("Usuario desactivado exitosamente");
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build(); // manejo de exepción cuando no se encuentra al user
+        }
+   }
+
 }

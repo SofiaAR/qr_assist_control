@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qr.dtos.DepartmentDto;
 import qr.entities.Department;
+import qr.entities.User;
 import qr.mapper.MapperDto;
 import qr.repositories.DepartmentRepository;
 
@@ -42,25 +43,35 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    //BUSCAR TODOS.
+    //BUSCAR TODOS//
     @Override
     public List<DepartmentDto> FindAll() {
         return null;
     }
 
-    //GUARDAR
+    //GUARDAR//
     @Override
     public DepartmentDto save(DepartmentDto departmentDto) {
         Department department = new Department();
 
         department.setId(departmentDto.getId());
         department.setName(department.getName());
-        //department.setCompany(companyService.findById(departmentDto.getCompany()));
+        // Asigna la compañía correspondiente a partir del DTO
+        department.setCompany(companyService.findById(departmentDto.getCompanyDto().getId()));
+
+        // Guarda la entidad en el repositorio
+
+        Department savedDepartment = departmentRepository.save(department);
+
+        // actualiza la entidad en el repo
+        departmentDto.setId(savedDepartment.getId());
+
         return departmentDto;
+
     }
 
 
-    //ACTUALIZAR
+    //ACTUALIZAR//
 
     @Override
     public void update(DepartmentDto departmentDto) {
@@ -76,8 +87,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
 
-//INHABILITAR
-
+    //BORRAR//
         @Override
         public void delete (Long id){
             //se declara variable de tipo optional se carga con los datos que retorna el metodo finbyid
@@ -90,5 +100,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
 
-    }
+
+
+}
 

@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
 
-    public UserDto save(UserDto userDto) {
+    public UserDto save(UserDto userDto) { //renombrar los saves cmo create ( por el crud)
         User user = new User();
 
         user.setRut(userDto.getRut());
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserDto dataForUpdate) {
+    public void update(UserDto dataForUpdate) { // y este es cmo guardar pero lo dejare igual como update
 
         //Ejecutar metodo del repositorio de ususario para obtener un ususario a traves de su id
         Optional<User> optionalUser = userRepository.findById(dataForUpdate.getId());
@@ -110,6 +110,18 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user = optionalUser.get();
             userRepository.delete(user);
+        }
+    }
+
+    @Override
+    public void deactivateUser(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setActive(false);//desactiva el usuario
+            userRepository.save(user); //Guarda cambios en la BD
+        }else{
+            throw new IllegalArgumentException("User not found");
         }
     }
 

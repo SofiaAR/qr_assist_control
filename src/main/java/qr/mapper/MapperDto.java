@@ -1,13 +1,7 @@
 package qr.mapper;
 
-import qr.dtos.CompanyDto;
-import qr.dtos.DepartmentDto;
-import qr.dtos.RolDto;
-import qr.dtos.UserDto;
-import qr.entities.Company;
-import qr.entities.Department;
-import qr.entities.Rol;
-import qr.entities.User;
+import qr.dtos.*;
+import qr.entities.*;
 
 public class MapperDto {
 
@@ -55,6 +49,26 @@ public class MapperDto {
 
         return companyDto;
 
+    }
+
+    public static RegistrationTypeDto convertRegistrationTypeEntityToDto(RegistrationType registrationType) {
+        RegistrationTypeDto registrationTypeDto = new RegistrationTypeDto();
+
+        registrationTypeDto.setId(registrationTypeDto.getId());
+        registrationTypeDto.setType(registrationTypeDto.getType());
+        registrationTypeDto.setDescription(registrationTypeDto.getDescription());
+
+        return registrationTypeDto;
+    }
+    public static WorkerAssistanceDto TransformWorkerAssistanceEntityToDto(WorkerAssistance workerAssistance){
+
+        WorkerAssistanceDto workerAssistanceDto = new WorkerAssistanceDto();
+        workerAssistanceDto.setId(workerAssistance.getId());
+        workerAssistanceDto.setDateRecord(workerAssistanceDto.getDateRecord());
+        workerAssistanceDto.setUserDto(TransformUserEntityToUserDto(workerAssistance.getUser()));
+        workerAssistanceDto.setRegistrationTypeDto(convertRegistrationTypeEntityToDto(workerAssistance.getRegistrationType()));//crear mapper de registrationtype
+
+        return workerAssistanceDto;
     }
 }
 
