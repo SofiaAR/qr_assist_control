@@ -4,36 +4,47 @@ package qr.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import qr.Dtos.UserDto;
-import qr.entities.User;
+import qr.dtos.UserDto;
 import qr.services.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> findById(@PathVariable Long userId){
-        return ResponseEntity.ok(userService.findById(userId));
+        return ResponseEntity.ok(userService.findByIdDto(userId));
     }
 
-    @PostMapping
+
+    @PostMapping("/save")
    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.save(userDto));
    }
 
-   @PutMapping
+   @PutMapping("/update")
    public ResponseEntity<Void> update(@RequestBody UserDto userDto){
 
         userService.update(userDto);
         return ResponseEntity.ok().build();
    }
 
-   @DeleteMapping("/{id}")
+   @DeleteMapping("/delete/{id}")
    public ResponseEntity<Void> delete(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok().build();
    }
+
+   @PutMapping("/deactivate/{userId}")
+   public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
+        try{
+            userService.deactivateUser(userId);
+            return ResponseEntity.ok("Usuario desactivado exitosamente");
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build(); // manejo de exepción cuando no se encuentra al user
+        }
+   }
+
 }

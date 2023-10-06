@@ -2,7 +2,7 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.Dtos.RolDto;
+import qr.dtos.RolDto;
 import qr.entities.Rol;
 import qr.mapper.MapperDto;
 import qr.repositories.RolRepository;
@@ -28,7 +28,7 @@ public class RolServiceImpl implements RolService {
 
     @Override
     public Rol findById(Long id) {
-        Optional<Rol> rolEntity = RolRepository.findById(id);
+        Optional<Rol> rolEntity = rolRepository.findById(id);
         if (rolEntity.isPresent()) {
             Rol rol = rolEntity.get();
             return rol;
@@ -37,4 +37,3 @@ public class RolServiceImpl implements RolService {
         }
     }
 }
-

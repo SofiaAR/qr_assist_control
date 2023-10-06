@@ -1,4 +1,4 @@
-package qr.Dtos;
+package qr.dtos;
 
 public class RolDto {
     private Long id;

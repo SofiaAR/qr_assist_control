@@ -1,16 +1,8 @@
-package qr.entities;
-
-
-import jakarta.persistence.*;
+package qr.dtos;
 
 import java.time.LocalDate;
 
-
-@Entity
-public class BugRecord {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class BugRecordDto {
     private Long id;
     private String bugDescription;
     private LocalDate bugDate;
@@ -38,5 +30,4 @@ public class BugRecord {
     public void setBugDate(LocalDate bugDate) {
         this.bugDate = bugDate;
     }
-
 }

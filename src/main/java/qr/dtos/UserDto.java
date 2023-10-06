@@ -1,4 +1,4 @@
-package qr.Dtos;
+package qr.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,6 +14,7 @@ public class UserDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractDate;
     private DepartmentDto departmentDto;
+    private boolean active;
 
     public Long getId() {
         return id;

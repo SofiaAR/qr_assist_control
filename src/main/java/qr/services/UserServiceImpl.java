@@ -2,7 +2,7 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.Dtos.UserDto;
+import qr.dtos.UserDto;
 import qr.entities.User;
 import qr.mapper.MapperDto;
 import qr.repositories.UserRepository;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private RolService rolService;
 
     @Override
-    public UserDto findById(Long id) {
+    public UserDto findByIdDto(Long id) {
         Optional<User> userEntity = userRepository.findById(id);
         if (userEntity.isPresent()) {
             User user = userEntity.get();
@@ -33,17 +33,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public UserDto findByRutDto(String rut){
+        Optional<User> userRut = userRepository.findByRut(rut);
+        if (userRut.isPresent()){
+            User user = userRut.get();
+            return MapperDto.TransformUserEntityToUserDto(user);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public User findByRut(String rut) {
+        return null;
+    }
+
+    @Override
     public List<UserDto> FindAll() {
         return null;
     }
 
     @Override
 
-    public UserDto save(UserDto userDto) {
+    public UserDto save(UserDto userDto) { //renombrar los saves cmo create ( por el crud)
         User user = new User();
 
         user.setRut(userDto.getRut());
-        user.setNumdocument(userDto.getNumDocument());
+        user.setDocumentNumber(userDto.getNumDocument());
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
         user.setRol(rolService.findById(userDto.getRolDto().getId()));
@@ -61,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserDto dataForUpdate) {
+    public void update(UserDto dataForUpdate) { // y este es cmo guardar pero lo dejare igual como update
 
         //Ejecutar metodo del repositorio de ususario para obtener un ususario a traves de su id
         Optional<User> optionalUser = userRepository.findById(dataForUpdate.getId());
@@ -71,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
             user.setName(dataForUpdate.getName());
             user.setRut(dataForUpdate.getRut());
-            user.setNumdocument(dataForUpdate.getNumDocument());
+            user.setDocumentNumber(dataForUpdate.getNumDocument());
             user.setLastname(dataForUpdate.getLastName());
             //user.setRol(dataForUpdate.getRolDto());
             //user.setDepartment(dataForUpdate.getDepartmentDto());
@@ -89,6 +110,18 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user = optionalUser.get();
             userRepository.delete(user);
+        }
+    }
+
+    @Override
+    public void deactivateUser(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setActive(false);//desactiva el usuario
+            userRepository.save(user); //Guarda cambios en la BD
+        }else{
+            throw new IllegalArgumentException("User not found");
         }
     }
 

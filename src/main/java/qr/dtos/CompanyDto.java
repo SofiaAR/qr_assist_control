@@ -1,18 +1,12 @@
-package qr.entities;
+package qr.dtos;
 
-import jakarta.persistence.*;
+public class CompanyDto {
 
-
-@Entity
-public class Company {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String rut;
-    private String turn; //giro
-    private boolean active = true;
+    private String turn;
+    private boolean active;
 
     public Long getId() {
         return id;
