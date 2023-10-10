@@ -11,6 +11,7 @@ import qr.dtos.WorkerAssistanceDto;
 import qr.entities.WorkerAssistance;
 import qr.services.WorkerAssistanceService;
 
+
 @RestController
 public class WorkerAssistanceController {
 

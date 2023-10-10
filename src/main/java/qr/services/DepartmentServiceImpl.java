@@ -17,8 +17,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
     @Autowired
-    private DepartmentService departmentService;
-    @Autowired
     private CompanyService companyService;
 
     @Override
@@ -80,7 +78,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             Department updateDepartment = existingDepartment.get();
             updateDepartment.setName(departmentDto.getName());
             //no creo que deba ir esta linea, a nivel de negocio, para que le asignaría al departamento una nueva compañia?
-            updateDepartment.setCompany(companyService.findById(departmentDto.getCompanyDto().getId()));
+            //updateDepartment.setCompany(companyService.findById(departmentDto.getCompanyDto().getId()));
 
             departmentRepository.save(updateDepartment);
         }

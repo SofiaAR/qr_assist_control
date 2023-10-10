@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 // Se debe agregar la anotacion @Service para que spring reconozca el servicio
 
 @Service
-public class WorkerAssistanceImpl {
+public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
     @Autowired
     private UserService userService;
