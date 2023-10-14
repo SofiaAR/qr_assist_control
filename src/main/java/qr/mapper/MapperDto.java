@@ -15,7 +15,7 @@ public class MapperDto {
         userDto.setName(user.getName());
         userDto.setLastName(user.getLastname());
         userDto.setRolDto(convertRolEntityToDto(user.getRol()));
-        userDto.setContractDate(user.getContractdate());
+        userDto.setContractDate(user.getContractDate());
         userDto.setDepartmentDto(convertDepartmentEntityToDto(user.getDepartment()));
         return userDto;
 

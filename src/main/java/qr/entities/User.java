@@ -14,13 +14,14 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String rut;
+
     private Integer documentNumber;
     private String name;
-    private String lastname;
+    private String lastName;
     @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_type_id")
+    @JoinColumn(name = "user_rol")
     private Rol rol;
-    private LocalDate contractdate;
+    private LocalDate contractDate;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
@@ -59,19 +60,19 @@ public class User {
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
 
-    public LocalDate getContractdate() {
-        return contractdate;
+    public LocalDate getContractDate() {
+        return contractDate;
     }
 
-    public void setContractdate(LocalDate contractdate) {
-        this.contractdate = contractdate;
+    public void setContractDate(LocalDate contractDate) {
+        this.contractDate = contractDate;
     }
 
     public Rol getRol() {

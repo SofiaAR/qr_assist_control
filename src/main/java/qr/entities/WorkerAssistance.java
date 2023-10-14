@@ -3,22 +3,24 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="worker_assistance")
 public class WorkerAssistance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private LocalDateTime dateRecord;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "registration_type_id")
     private RegistrationType registrationType;
+    private LocalDateTime entrance;
+    private LocalDateTime out;
+
 
     public Long getId() {
         return id;
@@ -26,14 +28,6 @@ public class WorkerAssistance {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LocalDateTime getDateRecord() {
-        return dateRecord;
-    }
-
-    public void setDateRecord(LocalDateTime dateRecord) {
-        this.dateRecord = dateRecord;
     }
 
     public User getUser() {
@@ -50,6 +44,22 @@ public class WorkerAssistance {
 
     public void setRegistrationType(RegistrationType registrationType) {
         this.registrationType = registrationType;
+    }
+
+    public LocalDateTime getEntrance() {
+        return entrance;
+    }
+
+    public void setEntrance(LocalDateTime entrance) {
+        this.entrance = entrance;
+    }
+
+    public LocalDateTime getOut() {
+        return out;
+    }
+
+    public void setOut(LocalDateTime out) {
+        this.out = out;
     }
 }
 

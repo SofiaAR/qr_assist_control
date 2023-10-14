@@ -2,7 +2,9 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import qr.dtos.DepartmentDto;
 import qr.dtos.UserDto;
+import qr.entities.Rol;
 import qr.entities.User;
 import qr.mapper.MapperDto;
 import qr.repositories.UserRepository;
@@ -50,7 +52,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByRut(String rut) {
-        return null;
+        Optional<User> userRut = userRepository.findByRut(rut);
+        if (userRut.isPresent()) {
+            return userRut.get();
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -67,9 +74,22 @@ public class UserServiceImpl implements UserService {
         user.setDocumentNumber(userDto.getNumDocument());
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
-        user.setRol(rolService.findById(userDto.getRolDto().getId()));
-        user.setContractdate(userDto.getContractDate());
-        user.setDepartment(departmentService.findById(userDto.getDepartmentDto().getId()));
+
+
+        Rol rolFounded = rolService.findById(userDto.getRolDto().getId());
+        if (rolFounded == null){
+            throw new RuntimeException("Rol no encontrado: " + userDto.getRolDto().getId());
+        }
+
+
+        user.setContractDate(userDto.getContractDate());
+        //user.setDepartment(departmentService.findById(userDto.getDepartmentDto().getId()));
+
+
+        DepartmentDto departmentFounded = departmentService.findDtoById(userDto.getDepartmentDto().getId());
+        if (departmentFounded == null) {
+            throw new RuntimeException("Departamento no encontrado :" + userDto.getDepartmentDto().getId());
+        }
 
         /*
         Aqui el metodo save esta guardando el objeto user, y esta retornando una nuevo objeto que tiene los mismos datos del objeto user pero con el nuevo id

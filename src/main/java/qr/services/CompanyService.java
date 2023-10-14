@@ -6,7 +6,6 @@ import qr.entities.Company;
 import java.util.List;
 
 public interface CompanyService {
-
     CompanyDto findByIdDto(Long id);
 
     Company findById(Long id);

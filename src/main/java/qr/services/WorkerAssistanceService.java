@@ -4,7 +4,7 @@ import qr.dtos.WorkerAssistanceDto;
 
 public interface WorkerAssistanceService {
 
-    WorkerAssistanceDto save(String rut, Long registrationTypeId);
+    WorkerAssistanceDto save(String rut, Long registrationTypeId, Boolean arrival);
 
 
 }

@@ -29,8 +29,7 @@ public class CompanyServiceImpl implements CompanyService{
     public Company findById(Long id) {
         Optional<Company> companyEntity = companyRepository.findById(id);
         if (companyEntity.isPresent()) {
-            Company company = companyEntity.get();
-            return company;
+            return companyEntity.get();
         } else {
             return null;
         }

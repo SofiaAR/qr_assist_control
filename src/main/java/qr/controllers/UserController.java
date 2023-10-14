@@ -8,7 +8,7 @@ import qr.dtos.UserDto;
 import qr.services.UserService;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
