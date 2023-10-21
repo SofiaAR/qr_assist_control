@@ -3,6 +3,9 @@ package qr.mapper;
 import qr.dtos.*;
 import qr.entities.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapperDto {
 
     public static UserDto TransformUserEntityToUserDto(User user) {
@@ -15,7 +18,7 @@ public class MapperDto {
         userDto.setName(user.getName());
         userDto.setLastName(user.getLastname());
         userDto.setRolDto(convertRolEntityToDto(user.getRol()));
-        userDto.setContractDate(user.getContractdate());
+        userDto.setContractDate(user.getContractDate());
         userDto.setDepartmentDto(convertDepartmentEntityToDto(user.getDepartment()));
         return userDto;
 
@@ -69,6 +72,19 @@ public class MapperDto {
         workerAssistanceDto.setRegistrationTypeDto(convertRegistrationTypeEntityToDto(workerAssistance.getRegistrationType()));//crear mapper de registrationtype
 
         return workerAssistanceDto;
+
     }
+
+    public static List<UserDto> TransformListUserToListUserDto(List<User> allUsers){
+
+        List<UserDto> users = new ArrayList<>(); //lista vacia
+        for (User u : allUsers) {
+            UserDto userDto = TransformUserEntityToUserDto(u);
+            users.add(userDto);
+        }
+
+        return users;
+    }
+
 }
 

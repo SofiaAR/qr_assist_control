@@ -9,7 +9,7 @@ import qr.services.DepartmentService;
 import qr.services.UserService;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired

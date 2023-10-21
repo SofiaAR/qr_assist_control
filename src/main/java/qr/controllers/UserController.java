@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import qr.dtos.UserDto;
 import qr.services.UserService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -45,6 +47,12 @@ public class UserController {
         }catch (IllegalArgumentException e){
             return ResponseEntity.notFound().build(); // manejo de exepción cuando no se encuentra al user
         }
+   }
+
+   @GetMapping("/all")
+   public List<UserDto> getAllUsers(){
+        List<UserDto> userDtos = userService.FindAll();
+        return userDtos;
    }
 
 }

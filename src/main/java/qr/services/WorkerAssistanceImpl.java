@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 // Se debe agregar la anotacion @Service para que spring reconozca el servicio
 
 @Service
-public class WorkerAssistanceImpl {
+public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
     @Autowired
     private UserService userService;
@@ -30,34 +30,42 @@ public class WorkerAssistanceImpl {
 
     //Si este metodo lo va a usar el controllador debe retornar un DTO
 
-    public WorkerAssistanceDto save(String rut, Long registrationTypeId) {
+    public WorkerAssistanceDto save(String rut, Long registrationTypeId, Boolean arrival) {
 
         User user = userService.findByRut(rut);
         if (user == null) {
-            throw new IllegalArgumentException("usuario no encontrado por rut" + rut);
+            throw new IllegalArgumentException("usuario no encontrado por rut :" + rut);
         }
         RegistrationType registrationType = registrationTypeService.findById(registrationTypeId);
-        if(registrationType == null){
-            throw new IllegalArgumentException("No se encuentra registro por el id :"+ registrationTypeId);
+        if (registrationType == null) {
+            throw new IllegalArgumentException("No se encuentra el tipo de registro por el id :" + registrationTypeId);
         }
 
         // crear una variable de tipo Userentity que almacene el resultado del metodo findbyrut del user service
         //crear metodo que retorne una entidad
 
+        WorkerAssistance workerAssistanceForSave;
 
-        WorkerAssistance workerAssistance = new WorkerAssistance();
+        // variable que tiene asignada el valor que retorna el metodo findByUserAndStartIsNotNullAndEndIsNull
+        WorkerAssistance workerAssistanceIsNotEnd = workerAssistanceRepository.findByUserAndEntranceIsNotNullAndOutIsNull(user);
 
-        workerAssistance.setUser(user);
-        workerAssistance.setDateRecord(LocalDateTime.now());
+        if (arrival) {
 
-        workerAssistance.setRegistrationType(registrationTypeService.findById(registrationTypeId));
-
+            if (workerAssistanceIsNotEnd != null) {
+                throw new RuntimeException("Usuario tiene una sesión activa");
+            }
+            workerAssistanceForSave = new WorkerAssistance();
+            workerAssistanceForSave.setEntrance(LocalDateTime.now());
+            workerAssistanceForSave.setUser(user);
+            workerAssistanceForSave.setRegistrationType(registrationTypeService.findById(registrationTypeId));
+        } else {
+            workerAssistanceForSave = workerAssistanceIsNotEnd;
+            workerAssistanceForSave.setOut(LocalDateTime.now());
+        }
         // falta agregar una propiedad de tipo WorkerAssitenceRepository
 
-        workerAssistanceRepository.save(workerAssistance);
+        workerAssistanceRepository.save(workerAssistanceForSave);
 
-        return MapperDto.TransformWorkerAssistanceEntityToDto(workerAssistance);
+        return MapperDto.TransformWorkerAssistanceEntityToDto(workerAssistanceForSave);
     }
-
-
 }
