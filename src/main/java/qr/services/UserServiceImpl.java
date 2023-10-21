@@ -62,7 +62,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> FindAll() {
-        return null;
+        //JPA para traer todos los users de la bd
+        List<User> users = userRepository.findAll();
+
+        return MapperDto.TransformListUserToListUserDto(users);
     }
 
     @Override

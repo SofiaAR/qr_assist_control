@@ -6,15 +6,19 @@ import qr.dtos.CompanyDto;
 import qr.entities.Company;
 import qr.mapper.MapperDto;
 import qr.repositories.CompanyRepository;
+import qr.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompanyServiceImpl implements CompanyService{
+public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public CompanyDto findByIdDto(Long id) {
@@ -36,7 +40,12 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public List<CompanyDto> FindAll() {return null;}
+    public List<CompanyDto> FindAll() {
+        return null;
+    }
+
+
+
 
 
     @Override
