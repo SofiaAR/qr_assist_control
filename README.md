@@ -23,3 +23,9 @@ Se debería ver algo así. Para visualizar los datos te pone sobre la tabla , y 
 
 3. [JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 
+## Para levantar el servicio tienes que darle al play en la esquina superior derecha.
+
+![img_3.png](img_3.png)
+
+Te indica en que puerto se levanta y que ha sido inicializada correctamente. Arriba puedes luego detener si haces algún cambio, 
+ojo que siempre esté en CoreAplication y no en alguna clase especifica.
