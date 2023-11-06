@@ -17,6 +17,7 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired//anotación ,habilita la inyeccion automatica de dependencias.
     private UserService userService;
+
     @Value("${jwt_secret}")
     private String keySecret;
 
