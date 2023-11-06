@@ -20,5 +20,6 @@ Se debería ver algo así. Para visualizar los datos te pone sobre la tabla , y 
 ![img_2.png](img_2.png)
 
 
+
 3. [JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 
