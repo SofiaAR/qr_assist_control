@@ -14,7 +14,7 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String rut;
-
+    private String password;
     private Integer documentNumber;
     private String name;
     private String lastName;
@@ -26,6 +26,22 @@ public class User {
     @JoinColumn(name = "department_id")
     private Department department;
     private boolean active = true;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public Long getId() {
         return id;

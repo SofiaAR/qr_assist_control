@@ -30,15 +30,17 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
     //Si este metodo lo va a usar el controllador debe retornar un DTO
 
-    public WorkerAssistanceDto save(String rut, Long registrationTypeId, Boolean arrival) {
+    public String save(String rut, String registrationType, Boolean arrival) {
+
+        String message;
 
         User user = userService.findByRut(rut);
         if (user == null) {
             throw new IllegalArgumentException("usuario no encontrado por rut :" + rut);
         }
-        RegistrationType registrationType = registrationTypeService.findById(registrationTypeId);
-        if (registrationType == null) {
-            throw new IllegalArgumentException("No se encuentra el tipo de registro por el id :" + registrationTypeId);
+        RegistrationType registrationTypeFound = registrationTypeService.findByType(registrationType);
+        if (registrationTypeFound == null) {
+            throw new IllegalArgumentException("No se encuentra el tipo de registro por el tipo :" + registrationTypeFound);
         }
 
         // crear una variable de tipo Userentity que almacene el resultado del metodo findbyrut del user service
@@ -52,12 +54,12 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
         if (arrival) {
 
             if (workerAssistanceIsNotEnd != null) {
-                throw new RuntimeException("Usuario tiene una sesión activa");
+                throw new RuntimeException("Usuario tiene una entrada activa");
             }
             workerAssistanceForSave = new WorkerAssistance();
             workerAssistanceForSave.setEntrance(LocalDateTime.now());
             workerAssistanceForSave.setUser(user);
-            workerAssistanceForSave.setRegistrationType(registrationTypeService.findById(registrationTypeId));
+            workerAssistanceForSave.setRegistrationType(registrationTypeFound);
         } else {
             workerAssistanceForSave = workerAssistanceIsNotEnd;
             workerAssistanceForSave.setOut(LocalDateTime.now());
@@ -66,6 +68,12 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
         workerAssistanceRepository.save(workerAssistanceForSave);
 
-        return MapperDto.TransformWorkerAssistanceEntityToDto(workerAssistanceForSave);
+        if (arrival) {
+            message = "Entrada de usuario registrada correctamente";
+        } else {
+            message = "Salida de usuario registrada correctamente";
+        }
+
+        return message;
     }
 }

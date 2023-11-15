@@ -90,4 +90,15 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    @Override
+    public void deactivateCompany(Long id){
+        Optional<Company> optionalCompany = companyRepository.findById(id);
+        if(optionalCompany.isPresent()){
+            Company company = optionalCompany.get();
+            company.setActive(false);
+            companyRepository.save(company);
+        }else{
+            throw new IllegalArgumentException("Company not found");
+        }
+    }
 }

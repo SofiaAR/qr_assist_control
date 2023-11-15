@@ -32,12 +32,9 @@ public class MapperDto {
     }
 
     public static DepartmentDto convertDepartmentEntityToDto(Department department) {
-
-
         DepartmentDto departmentDto = new DepartmentDto();
         departmentDto.setId(department.getId());
         departmentDto.setName(department.getName());
-
         return departmentDto;
     }
 
