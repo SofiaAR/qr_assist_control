@@ -2,10 +2,7 @@ package qr.services;
 
 import qr.dtos.AuthDto;
 
-//solo los metodos publicos
-public interface AuthService {
+public interface AuthenticationService {
 
     String login(AuthDto authDto);
-
-
 }

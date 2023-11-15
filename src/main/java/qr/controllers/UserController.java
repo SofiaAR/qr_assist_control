@@ -39,7 +39,7 @@ public class UserController {
         return ResponseEntity.ok().build();
    }
 
-   @PutMapping("/deactivate/{userId}")
+   @PutMapping("/disable/{userId}")
    public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
         try{
             userService.deactivateUser(userId);

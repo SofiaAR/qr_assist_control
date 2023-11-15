@@ -19,11 +19,14 @@ public class WorkerAssistanceController {
     private WorkerAssistanceService workerAssistanceService;
 
     @PostMapping("/save")
-    public ResponseEntity<WorkerAssistanceDto> saveWorkerAssistance(
+    public ResponseEntity<String> saveWorkerAssistance(
             @RequestBody NewWorkerAssistanceDto newWorkerAssistanceDto
     ) {
-        WorkerAssistanceDto savedWorkerAssistance = workerAssistanceService.save(newWorkerAssistanceDto.getRut(),newWorkerAssistanceDto.getRegistrationTypeDto().getId(),newWorkerAssistanceDto.getArrival());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedWorkerAssistance);
+        return ResponseEntity.ok(workerAssistanceService.save(
+                newWorkerAssistanceDto.getRut(),
+                newWorkerAssistanceDto.getRegistrationType(),
+                newWorkerAssistanceDto.getArrival()
+        ));
     }
 
 }
