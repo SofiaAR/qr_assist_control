@@ -28,4 +28,9 @@ public class RegistrationTypeServiceImpl implements RegistrationTypeService {
             return null;
         }
     }
+
+    @Override
+    public RegistrationType findByType(String type) {
+        return registrationTypeRepository.findByType(type).orElse(null);
+    }
 }

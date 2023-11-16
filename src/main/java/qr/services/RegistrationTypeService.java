@@ -9,4 +9,6 @@ public interface RegistrationTypeService {
 
     RegistrationType findById(Long id);
 
+    RegistrationType findByType(String type);
+
 }

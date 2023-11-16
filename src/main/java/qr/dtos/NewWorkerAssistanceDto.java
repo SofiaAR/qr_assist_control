@@ -3,7 +3,7 @@ package qr.dtos;
 public class NewWorkerAssistanceDto {
 
     private String rut;
-    private RegistrationTypeDto registrationTypeDto;
+    private String registrationType;
     private Boolean arrival;
 
     public String getRut() {
@@ -14,12 +14,12 @@ public class NewWorkerAssistanceDto {
         this.rut = rut;
     }
 
-    public RegistrationTypeDto getRegistrationTypeDto() {
-        return registrationTypeDto;
+    public String getRegistrationType() {
+        return registrationType;
     }
 
-    public void setRegistrationTypeDto(RegistrationTypeDto registrationTypeDto) {
-        this.registrationTypeDto = registrationTypeDto;
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType;
     }
 
     public Boolean getArrival() {
