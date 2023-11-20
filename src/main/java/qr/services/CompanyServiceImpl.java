@@ -10,6 +10,7 @@ import qr.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -41,11 +42,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDto> FindAll() {
-        return null;
+        return companyRepository.findAll().stream().map(MapperDto::convertCompanyEntityToDto)
+                .collect(Collectors.toList());
     }
-
-
-
 
 
     @Override
@@ -71,9 +70,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void update(CompanyDto companyDto) {
         Optional<Company> existingCompany = companyRepository.findById(companyDto.getId());
-        if (existingCompany.isPresent()){
+        if (existingCompany.isPresent()) {
             Company updatedCompany = existingCompany.get();
-            
+
         }
 
     }
@@ -91,13 +90,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deactivateCompany(Long id){
+    public void deactivateCompany(Long id) {
         Optional<Company> optionalCompany = companyRepository.findById(id);
-        if(optionalCompany.isPresent()){
+        if (optionalCompany.isPresent()) {
             Company company = optionalCompany.get();
             company.setActive(false);
             companyRepository.save(company);
-        }else{
+        } else {
             throw new IllegalArgumentException("Company not found");
         }
     }

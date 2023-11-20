@@ -1,5 +1,6 @@
 package qr.services;
 
+import qr.dtos.NewUserRequestDto;
 import qr.dtos.UserDto;
 import qr.entities.User;
 
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<UserDto> FindAll();
 
-    UserDto save(UserDto newUser);
+    void save(NewUserRequestDto userDto);
 
     void update (UserDto updateUser);
 

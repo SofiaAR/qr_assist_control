@@ -15,6 +15,9 @@ import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,46 +31,44 @@ import java.nio.file.Files;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Date;
+import java.util.List;
 
 @Component//anotación de spring ,construye una clase de servicio que conecta a varios repositoriosy agrupa su func.
 public class SecurityFilter extends OncePerRequestFilter {
 
-
-    @Value("${jwt_secret}")
-    private String keySecret;
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        AuthDto authDto = null;
         try {
-            authDto = verifyToken(request);
-            if (authDto != null) { //
-
-            } else {
-                //no autorizado
+            if (!request.getMethod().equals(HttpMethod.OPTIONS.name())
+                    && !(request.getRequestURI().equals("/worker-assistance/save")
+                    || request.getRequestURI().equals("/auth/login"))
+            ) {
+                String token = getTokenFromRequest(request);
+                verifyToken(token);
+                filterChain.doFilter(request, response);
+                return;
             }
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        filterChain.doFilter(request, response);
     }
 
 
-    public String generateToken(AuthDto authDto) {
+    public static String generateToken(AuthDto authDto) {
         try {
             Algorithm algorithm = getAlgorithm();
-            String token = JWT.create()
+            return JWT.create()
                     .withKeyId(authDto.getId().toString())
                     .withSubject(authDto.getUsername())
                     .withIssuer("auth0")
+                    .withExpiresAt(new Date((new Date()).getTime() + 3600000))
                     .sign(algorithm);
-
-            return token;
         } catch (JWTCreationException exception) {
             throw new RuntimeException("generate token is failed");
         } catch (Exception e) {
@@ -75,85 +76,75 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
     }
 
-    public AuthDto verifyToken(HttpServletRequest request) throws Exception {
-
-        AuthDto authDto = new AuthDto();
-
+    public String getTokenFromRequest(HttpServletRequest request) {
         String tokenFromHeader = request.getHeader("Authorization");
         if (tokenFromHeader != null) {
-            String token = tokenFromHeader.replace("Bearer ", "");
-            Algorithm algorithm = getAlgorithm();
-            JWTVerifier verifier = JWT.require(algorithm)
-                    // specify an specific claim validations
-                    .withIssuer("auth0")
-                    // reusable verifier instance
-                    .build();
-
-            DecodedJWT verify = verifier.verify(token);
-            authDto.setId(Long.valueOf(verify.getId()));
-
-            return authDto;
-
+            return tokenFromHeader.replace("Bearer ", "");
         } else {
             return null;
         }
+    }
+
+
+    public static AuthDto verifyToken(String token) throws Exception {
+
+        AuthDto authDto = new AuthDto();
+
+        Algorithm algorithm = getAlgorithm();
+        JWTVerifier verifier = JWT.require(algorithm)
+                // specify an specific claim validations
+                .withIssuer("auth0")
+                // reusable verifier instance
+                .build();
+
+        DecodedJWT verify = verifier.verify(token);
+        authDto.setId(Long.valueOf(verify.getKeyId()));
+
+        return authDto;
+
 
     }
 
-    public Algorithm getAlgorithm() throws Exception {
-
-        File rsaPvt = new File("src/main/resources/id_rsa.key");
-        File rsaPub = new File("src/main/resources/id_rsa.pub");
-
-
-        return Algorithm.RSA256(readX509PublicKey(rsaPub), readPKCS8PrivateKey(rsaPvt));
+    public static Algorithm getAlgorithm() throws Exception {
+        return Algorithm.RSA256(loadRsaPublicKey(), loadRsaPrivateKey());
     }
 
-    public static RSAPublicKey readX509PublicKey(File file) throws Exception {
-        KeyFactory factory = KeyFactory.getInstance("RSA");
+    public static RSAPublicKey loadRsaPublicKey() throws Exception {
+        File rsaPub = new File("src/main/resources/key.pub");
+        byte[] publicKeyBytes = Files.readAllBytes(rsaPub.toPath());
+        KeyFactory publicKeyFactory = KeyFactory.getInstance("RSA");
+        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+        PublicKey publicKey = publicKeyFactory.generatePublic(publicKeySpec);
+        return (RSAPublicKey) publicKey;
+    }
 
-        try (FileReader keyReader = new FileReader(file);
-             PemReader pemReader = new PemReader(keyReader)) {
+    public static RSAPrivateKey loadRsaPrivateKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        File privateKeyFile = new File("src/main/resources/key");
+        byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
 
-            PemObject pemObject = pemReader.readPemObject();
-            byte[] content = pemObject.getContent();
-            X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(content);
-            return (RSAPublicKey) factory.generatePublic(pubKeySpec);
+        KeyFactory privateKeyFactory = KeyFactory.getInstance("RSA");
+        EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+        return (RSAPrivateKey) privateKeyFactory.generatePrivate(privateKeySpec);
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        List<String> ar = List.of(args);
+
+        for (String value : ar) {
+            System.out.println(value);
         }
-    }
 
-    public RSAPrivateKey readPKCS8PrivateKey(File file) throws Exception {
-        KeyFactory factory = KeyFactory.getInstance("RSA");
+        AuthDto authDto = new AuthDto();
+        authDto.setId(2L);
+        authDto.setUsername("174613311");
 
-        try (FileReader keyReader = new FileReader(file);
-             PemReader pemReader = new PemReader(keyReader)) {
-
-            PemObject pemObject = pemReader.readPemObject();
-            byte[] content = pemObject.getContent();
-            PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(content);
-            return (RSAPrivateKey) factory.generatePrivate(privKeySpec);
-        }
-    }
-
-    public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-
-        kpg.initialize(2048);
-        KeyPair kp = kpg.generateKeyPair();
-
-        Key pub = kp.getPublic();
-        Key pvt = kp.getPrivate();
-
-        String outFile = "src/main/resources/rsa";
-        FileOutputStream out = new FileOutputStream(outFile + ".key");
-        out.write(pvt.getEncoded());
-        out.close();
-
-        out = new FileOutputStream(outFile + ".pub");
-        out.write(pub.getEncoded());
-        out.close();
+        String generateToken = generateToken(authDto);
+        System.out.println(generateToken);
 
 
+        AuthDto authDtos = verifyToken(generateToken);
+        System.out.println(authDtos.getId());
     }
 
 }

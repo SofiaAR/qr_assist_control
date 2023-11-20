@@ -2,15 +2,15 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.dtos.WorkerAssistanceDto;
 import qr.entities.RegistrationType;
 import qr.entities.User;
 import qr.entities.WorkerAssistance;
-import qr.mapper.MapperDto;
 import qr.repositories.UserRepository;
 import qr.repositories.WorkerAssistanceRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 // Se debe agregar la anotacion @Service para que spring reconozca el servicio
 
@@ -52,7 +52,6 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
         WorkerAssistance workerAssistanceIsNotEnd = workerAssistanceRepository.findByUserAndEntranceIsNotNullAndOutIsNull(user);
 
         if (arrival) {
-
             if (workerAssistanceIsNotEnd != null) {
                 throw new RuntimeException("Usuario tiene una entrada activa");
             }
@@ -75,5 +74,34 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
         }
 
         return message;
+    }
+
+    @Override
+    public Long getExtraHourOfUser(String rut) {
+
+        long totalHours = 0L;
+        User user = userService.findByRut(rut);
+
+        if (user == null) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime firstDayOfMonth = now.withDayOfMonth(1);
+
+        List<WorkerAssistance> assistances = workerAssistanceRepository.findByUserAndEntranceBetween(user, firstDayOfMonth, now);
+
+        for (WorkerAssistance wa : assistances) {
+            long hours = wa.getEntrance().until(wa.getOut(), ChronoUnit.HOURS);
+
+            long difference = hours - 9L;
+
+            if (difference > 0L) {
+                totalHours = totalHours + difference;
+            }
+        }
+
+        return totalHours;
     }
 }

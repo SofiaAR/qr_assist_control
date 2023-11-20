@@ -6,7 +6,7 @@ import qr.dtos.AuthDto;
 import qr.entities.User;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired//anotación ,habilita la inyeccion automatica de dependencias.
     private UserService userService;
@@ -40,4 +40,6 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         return token; // si el us y el pass son validos se retorna un token.
 
     }
+
+
 }
