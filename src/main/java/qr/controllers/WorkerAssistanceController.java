@@ -12,7 +12,7 @@ import qr.services.WorkerAssistanceService;
 
 
 @RestController
-@RequestMapping("/workerAssistance")
+@RequestMapping("/worker-assistance")
 public class WorkerAssistanceController {
 
     @Autowired
@@ -27,6 +27,22 @@ public class WorkerAssistanceController {
                 newWorkerAssistanceDto.getRegistrationType(),
                 newWorkerAssistanceDto.getArrival()
         ));
+    }
+
+    @PostMapping("/save/manual")
+    public ResponseEntity<String> saveManualWorkerAssistance(
+            @RequestBody NewWorkerAssistanceDto newWorkerAssistanceDto
+    ) {
+        return ResponseEntity.ok(workerAssistanceService.save(
+                newWorkerAssistanceDto.getRut(),
+                newWorkerAssistanceDto.getRegistrationType(),
+                newWorkerAssistanceDto.getArrival()
+        ));
+    }
+
+    @GetMapping("/extra-hours/{rut}")
+    public ResponseEntity<Long> saveWorkerAssistance(@PathVariable String rut) {
+        return ResponseEntity.ok(workerAssistanceService.getExtraHourOfUser(rut));
     }
 
 }

@@ -4,6 +4,7 @@ package qr.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import qr.dtos.NewUserRequestDto;
 import qr.dtos.UserDto;
 import qr.services.UserService;
 
@@ -16,43 +17,48 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long userId){
+    public ResponseEntity<UserDto> findById(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.findByIdDto(userId));
     }
 
 
     @PostMapping("/save")
-   public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.save(userDto));
-   }
+    public ResponseEntity<UserDto> save(@RequestBody NewUserRequestDto userDto) {
+        try {
+            userService.save(userDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-   @PutMapping("/update")
-   public ResponseEntity<Void> update(@RequestBody UserDto userDto){
+    @PutMapping("/update")
+    public ResponseEntity<Void> update(@RequestBody UserDto userDto) {
 
         userService.update(userDto);
         return ResponseEntity.ok().build();
-   }
+    }
 
-   @DeleteMapping("/delete/{id}")
-   public ResponseEntity<Void> delete(@PathVariable Long id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.ok().build();
-   }
+    }
 
-   @PutMapping("/disable/{userId}")
-   public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
-        try{
+    @PutMapping("/disable/{userId}")
+    public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
+        try {
             userService.deactivateUser(userId);
             return ResponseEntity.ok("Usuario desactivado exitosamente");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build(); // manejo de exepción cuando no se encuentra al user
         }
-   }
+    }
 
-   @GetMapping("/all")
-   public List<UserDto> getAllUsers(){
+    @GetMapping("/all")
+    public List<UserDto> getAllUsers() {
         List<UserDto> userDtos = userService.FindAll();
         return userDtos;
-   }
+    }
 
 }

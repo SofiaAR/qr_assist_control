@@ -1,8 +1,9 @@
 package qr.dtos;
 
 public class RolDto {
+
     private Long id;
-    private String position;
+    private String name;
 
     public Long getId() {
         return id;
@@ -12,11 +13,11 @@ public class RolDto {
         this.id = id;
     }
 
-    public String getPosition() {
-        return position;
+    public String getName() {
+        return name;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setName(String name) {
+        this.name = name;
     }
 }
