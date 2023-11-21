@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import qr.dtos.DepartmentDto;
 import qr.dtos.NewUserRequestDto;
 import qr.dtos.UserDto;
+import qr.entities.Department;
 import qr.entities.Rol;
 import qr.entities.User;
 import qr.mapper.MapperDto;
@@ -82,16 +83,19 @@ public class UserServiceImpl implements UserService {
         if (rolFounded == null) {
             throw new RuntimeException("Rol no encontrado: " + userDto.getRolId());
         }
+        user.setRol(rolFounded);
 
 
         user.setContractDate(userDto.getContractDate());
         //user.setDepartment(departmentService.findById(userDto.getDepartmentDto().getId()));
 
 
-        DepartmentDto departmentFounded = departmentService.findDtoById(userDto.getDepartmentId());
+        Department departmentFounded = departmentService.findById(userDto.getDepartmentId());
         if (departmentFounded == null) {
             throw new RuntimeException("Departamento no encontrado: " + userDto.getDepartmentId());
         }
+
+        user.setDepartment(departmentFounded);
 
         /*
         Aqui el metodo save esta guardando el objeto user, y esta retornando una nuevo objeto que tiene los mismos datos del objeto user pero con el nuevo id

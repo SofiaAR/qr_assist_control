@@ -23,13 +23,9 @@ public class UserController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<UserDto> save(@RequestBody NewUserRequestDto userDto) {
-        try {
-            userService.save(userDto);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Void> save(@RequestBody NewUserRequestDto userDto) {
+        userService.save(userDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update")
