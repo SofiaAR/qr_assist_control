@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
 
-
         Rol rolFounded = rolService.findById(userDto.getRolId());
         if (rolFounded == null) {
             throw new RuntimeException("Rol no encontrado: " + userDto.getRolId());

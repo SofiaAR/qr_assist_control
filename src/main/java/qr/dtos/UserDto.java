@@ -11,10 +11,30 @@ public class UserDto {
     private String name;
     private String lastName;
     private RolDto rolDto;
+    private String password;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractDate;
     private DepartmentDto departmentDto;
     private boolean active;
+
+    public UserDto() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public Long getId() {
         return id;
