@@ -4,21 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-public class UserDto {
-    private Long id;
+public class NewUserRequestDto {
+
     private String rut;
     private Integer numDocument;
     private String name;
     private String lastName;
-    private RolDto rolDto;
     private String password;
+    private Long rolId;
+    private Long departmentId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate contractDate;
-    private DepartmentDto departmentDto;
-    private boolean active;
 
-    public UserDto() {
-    }
 
     public String getPassword() {
         return password;
@@ -26,22 +23,6 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getRut() {
@@ -76,6 +57,22 @@ public class UserDto {
         this.lastName = lastName;
     }
 
+    public Long getRolId() {
+        return rolId;
+    }
+
+    public void setRolId(Long rolId) {
+        this.rolId = rolId;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public LocalDate getContractDate() {
         return contractDate;
     }
@@ -83,21 +80,4 @@ public class UserDto {
     public void setContractDate(LocalDate contractDate) {
         this.contractDate = contractDate;
     }
-
-    public RolDto getRolDto() {
-        return rolDto;
-    }
-
-    public void setRolDto(RolDto rolDto) {
-        this.rolDto = rolDto;
-    }
-
-    public DepartmentDto getDepartmentDto() {
-        return departmentDto;
-    }
-
-    public void setDepartmentDto(DepartmentDto departmentDto) {
-        this.departmentDto = departmentDto;
-    }
 }
-

@@ -1,32 +1,35 @@
 package qr.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.dtos.WorkerAssistanceDto;
 import qr.entities.RegistrationType;
 import qr.entities.User;
 import qr.entities.WorkerAssistance;
-import qr.mapper.MapperDto;
 import qr.repositories.UserRepository;
 import qr.repositories.WorkerAssistanceRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
 
 // Se debe agregar la anotacion @Service para que spring reconozca el servicio
 
 @Service
 public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RegistrationTypeService registrationTypeService;
-    @Autowired
-    private WorkerAssistanceRepository workerAssistanceRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private DepartmentService departmentService;
+
+    private final RegistrationTypeService registrationTypeService;
+    private final WorkerAssistanceRepository workerAssistanceRepository;
+    private final UserRepository userRepository;
+
+    public WorkerAssistanceImpl(
+            RegistrationTypeService registrationTypeService,
+            WorkerAssistanceRepository workerAssistanceRepository,
+            UserRepository userRepository) {
+        this.registrationTypeService = registrationTypeService;
+        this.workerAssistanceRepository = workerAssistanceRepository;
+        this.userRepository = userRepository;
+    }
 
     //Si este metodo lo va a usar el controllador debe retornar un DTO
 
@@ -34,8 +37,8 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
         String message;
 
-        User user = userService.findByRut(rut);
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findByRut(rut);
+        if (optionalUser.isEmpty()) {
             throw new IllegalArgumentException("usuario no encontrado por rut :" + rut);
         }
         RegistrationType registrationTypeFound = registrationTypeService.findByType(registrationType);
@@ -49,16 +52,15 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
         WorkerAssistance workerAssistanceForSave;
 
         // variable que tiene asignada el valor que retorna el metodo findByUserAndStartIsNotNullAndEndIsNull
-        WorkerAssistance workerAssistanceIsNotEnd = workerAssistanceRepository.findByUserAndEntranceIsNotNullAndOutIsNull(user);
+        WorkerAssistance workerAssistanceIsNotEnd = workerAssistanceRepository.findByUserAndEntranceIsNotNullAndOutIsNull(optionalUser.get());
 
         if (arrival) {
-
             if (workerAssistanceIsNotEnd != null) {
                 throw new RuntimeException("Usuario tiene una entrada activa");
             }
             workerAssistanceForSave = new WorkerAssistance();
             workerAssistanceForSave.setEntrance(LocalDateTime.now());
-            workerAssistanceForSave.setUser(user);
+            workerAssistanceForSave.setUser(optionalUser.get());
             workerAssistanceForSave.setRegistrationType(registrationTypeFound);
         } else {
             workerAssistanceForSave = workerAssistanceIsNotEnd;
@@ -75,5 +77,34 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
         }
 
         return message;
+    }
+
+    @Override
+    public Long getExtraHourOfUser(String rut) {
+
+        long totalHours = 0L;
+        Optional<User> user = userRepository.findByRut(rut);
+
+        if (user.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime firstDayOfMonth = now.withDayOfMonth(1);
+
+        List<WorkerAssistance> assistances = workerAssistanceRepository.findByUserAndEntranceBetween(user.get(), firstDayOfMonth, now);
+
+        for (WorkerAssistance wa : assistances) {
+            long hours = wa.getEntrance().until(wa.getOut(), ChronoUnit.HOURS);
+
+            long difference = hours - 9L;
+
+            if (difference > 0L) {
+                totalHours = totalHours + difference;
+            }
+        }
+
+        return totalHours;
     }
 }

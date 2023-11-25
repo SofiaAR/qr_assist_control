@@ -3,7 +3,9 @@ package qr.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qr.dtos.DepartmentDto;
+import qr.dtos.NewUserRequestDto;
 import qr.dtos.UserDto;
+import qr.entities.Department;
 import qr.entities.Rol;
 import qr.entities.User;
 import qr.mapper.MapperDto;
@@ -40,12 +42,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findByRutDto(String rut){
+    public UserDto findByRutDto(String rut) {
         Optional<User> userRut = userRepository.findByRut(rut);
-        if (userRut.isPresent()){
+        if (userRut.isPresent()) {
             User user = userRut.get();
             return MapperDto.TransformUserEntityToUserDto(user);
-        }else{
+        } else {
             return null;
         }
     }
@@ -55,7 +57,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userRut = userRepository.findByRut(rut);
         if (userRut.isPresent()) {
             return userRut.get();
-        }else{
+        } else {
             return null;
         }
     }
@@ -64,44 +66,41 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> FindAll() {
         //JPA para traer todos los users de la bd
         List<User> users = userRepository.findAll();
-
         return MapperDto.TransformListUserToListUserDto(users);
     }
 
     @Override
-
-    public UserDto save(UserDto userDto) { //renombrar los saves cmo create ( por el crud)
+    public void save(NewUserRequestDto userDto) { //renombrar los saves cmo create ( por el crud)
         User user = new User();
 
         user.setRut(userDto.getRut());
         user.setDocumentNumber(userDto.getNumDocument());
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
+        user.setPassword(userDto.getPassword());
 
-
-        Rol rolFounded = rolService.findById(userDto.getRolDto().getId());
-        if (rolFounded == null){
-            throw new RuntimeException("Rol no encontrado: " + userDto.getRolDto().getId());
+        Rol rolFounded = rolService.findById(userDto.getRolId());
+        if (rolFounded == null) {
+            throw new RuntimeException("Rol no encontrado: " + userDto.getRolId());
         }
+        user.setRol(rolFounded);
 
 
         user.setContractDate(userDto.getContractDate());
         //user.setDepartment(departmentService.findById(userDto.getDepartmentDto().getId()));
 
 
-        DepartmentDto departmentFounded = departmentService.findDtoById(userDto.getDepartmentDto().getId());
+        Department departmentFounded = departmentService.findById(userDto.getDepartmentId());
         if (departmentFounded == null) {
-            throw new RuntimeException("Departamento no encontrado :" + userDto.getDepartmentDto().getId());
+            throw new RuntimeException("Departamento no encontrado: " + userDto.getDepartmentId());
         }
+
+        user.setDepartment(departmentFounded);
 
         /*
         Aqui el metodo save esta guardando el objeto user, y esta retornando una nuevo objeto que tiene los mismos datos del objeto user pero con el nuevo id
          */
-        User userSaved = userRepository.save(user);
-
-        userDto.setId(userSaved.getId());
-
-        return userDto;
+        userRepository.save(user);
     }
 
     @Override
@@ -128,7 +127,6 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         //se declara variable de tipo optional se carga con los datos que retorna el metodo finbyid
         Optional<User> optionalUser = userRepository.findById(id);
-
         if (optionalUser.isPresent()) {
             User user = new User();
             user = optionalUser.get();
@@ -139,15 +137,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deactivateUser(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setActive(false);//desactiva el usuario
             userRepository.save(user); //Guarda cambios en la BD
-        }else{
+        } else {
             throw new IllegalArgumentException("User not found");
         }
     }
-
-
 }
 

@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qr.dtos.DepartmentDto;
 import qr.entities.Department;
-import qr.entities.User;
 import qr.mapper.MapperDto;
 import qr.repositories.DepartmentRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -44,8 +44,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     //BUSCAR TODOS//
     @Override
     public List<DepartmentDto> FindAll() {
-        return null;
-    }
+    return departmentRepository.findAll().stream().map(MapperDto::convertDepartmentEntityToDto)
+            .collect(Collectors.toList());
+    };
+
 
     //GUARDAR//
     @Override

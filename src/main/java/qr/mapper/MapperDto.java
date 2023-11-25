@@ -25,13 +25,19 @@ public class MapperDto {
     }
 
     public static RolDto convertRolEntityToDto(Rol rol) {
+        if (rol == null) {
+            return null;
+        }
         RolDto rolDto = new RolDto();
         rolDto.setId(rol.getId());
-        rolDto.setPosition(rol.getPosition());
+        rolDto.setName(rol.getName());
         return rolDto;
     }
 
     public static DepartmentDto convertDepartmentEntityToDto(Department department) {
+        if (department == null) {
+            return null;
+        }
         DepartmentDto departmentDto = new DepartmentDto();
         departmentDto.setId(department.getId());
         departmentDto.setName(department.getName());
@@ -60,7 +66,8 @@ public class MapperDto {
 
         return registrationTypeDto;
     }
-    public static WorkerAssistanceDto TransformWorkerAssistanceEntityToDto(WorkerAssistance workerAssistance){
+
+    public static WorkerAssistanceDto TransformWorkerAssistanceEntityToDto(WorkerAssistance workerAssistance) {
 
         WorkerAssistanceDto workerAssistanceDto = new WorkerAssistanceDto();
         workerAssistanceDto.setId(workerAssistance.getId());
@@ -72,7 +79,7 @@ public class MapperDto {
 
     }
 
-    public static List<UserDto> TransformListUserToListUserDto(List<User> allUsers){
+    public static List<UserDto> TransformListUserToListUserDto(List<User> allUsers) {
 
         List<UserDto> users = new ArrayList<>(); //lista vacia
         for (User u : allUsers) {
