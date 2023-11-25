@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
         user.setDocumentNumber(userDto.getNumDocument());
         user.setName(userDto.getName());
         user.setLastname(userDto.getLastName());
+        user.setPassword(userDto.getPassword());
 
         Rol rolFounded = rolService.findById(userDto.getRolId());
         if (rolFounded == null) {
