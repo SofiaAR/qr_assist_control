@@ -1,6 +1,5 @@
 package qr.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import qr.dtos.RegistrationTypeDto;
 import qr.entities.RegistrationType;
@@ -11,8 +10,12 @@ import java.util.Optional;
 @Service
 public class RegistrationTypeServiceImpl implements RegistrationTypeService {
 
-    @Autowired
-    private RegistrationTypeRepository registrationTypeRepository;
+
+    private final RegistrationTypeRepository registrationTypeRepository;
+
+    public RegistrationTypeServiceImpl(RegistrationTypeRepository registrationTypeRepository) {
+        this.registrationTypeRepository = registrationTypeRepository;
+    }
 
     @Override
     public RegistrationTypeDto findByIdDto(Long id) {

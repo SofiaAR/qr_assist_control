@@ -13,6 +13,7 @@ public interface DepartmentService {
 
     Department findById(Long id);
 
+    //BUSCAR TODOS//
     List<DepartmentDto> FindAll();
 
     DepartmentDto save(DepartmentDto newDepartment);
