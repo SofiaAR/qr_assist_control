@@ -110,45 +110,52 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
     }
 
     @Override
-    public Map<String,Integer> findAllWorkersByType(){
+    public Map<String, Integer> findAllWorkersByType() {
+        try {
+            Map<String, Integer> totalHoursMap = new HashMap<>();
 
-        Map<String, Integer> totalHoursMap = new HashMap<>();
+            //LLAMAR TODOS LOS USUARIOS-ITERAR POR CADA USUARIO
+            List<User> allUsers = userRepository.findAll();
+            //ITERACION
 
-        //LLAMAR TODOS LOS USUARIOS-ITERAR POR CADA USUARIO
-        List<User> allUsers = userRepository.findAll();
-        //ITERACION
-        for(int i = 1; i <=12 ; i++ ){
+            for (int i = 1; i <= 12; i++) {
 
-            int totalHoursPerMonth = 0;
+                int totalHoursPerMonth = 0;
 
-            LocalDateTime firstDayOfMonth = LocalDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-            LocalDateTime lastDayOfMonth = YearMonth.from(firstDayOfMonth).atEndOfMonth().atStartOfDay();
+                LocalDateTime firstDayOfMonth = LocalDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+                LocalDateTime lastDayOfMonth = YearMonth.from(firstDayOfMonth).atEndOfMonth().atStartOfDay();
 
-            for(User user: allUsers){
+                for (User user : allUsers) {
 
-                int totalHoursForUser = 0;
+                    int totalHoursForUser = 0;
 
-                if("trabajador".equalsIgnoreCase(user.getRol().getName())){
-                    List<WorkerAssistance> workerAssistances =  workerAssistanceRepository.findByUserAndEntranceBetween(user,firstDayOfMonth , lastDayOfMonth);
-                    for(WorkerAssistance w : workerAssistances) {
+                    if ("trabajador".equalsIgnoreCase(user.getRol().getName())) {
+                        List<WorkerAssistance> workerAssistances = workerAssistanceRepository.findByUserAndEntranceBetween(user, firstDayOfMonth, lastDayOfMonth);
+                        for (WorkerAssistance w : workerAssistances) {
 
-                        long hours = w.getEntrance().until(w.getOut(), ChronoUnit.HOURS); //total horas de una asistencia
+                            if (w.getOut() == null) {
+                                continue;
+                            }
 
-                        totalHoursForUser =  totalHoursForUser + (int) hours; //se acumulan las horas en la variable totalhours
+                            long hours = w.getEntrance().until(w.getOut(), ChronoUnit.HOURS); //total horas de una asistencia
 
+                            totalHoursForUser = totalHoursForUser + (int) hours; //se acumulan las horas en la variable totalhours
+
+                        }
+                        totalHoursPerMonth = totalHoursPerMonth + totalHoursForUser;
                     }
-                    totalHoursPerMonth = totalHoursPerMonth + totalHoursForUser;
                 }
+                String month = firstDayOfMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ES"));
+                totalHoursMap.put(month, totalHoursPerMonth);
             }
-
-            totalHoursMap.put(firstDayOfMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ES")),totalHoursPerMonth);
+            return totalHoursMap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return totalHoursMap;
+
+
     }
-
-
-
-
 
 
 }
