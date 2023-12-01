@@ -3,9 +3,7 @@ package qr.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import qr.dtos.CompanyDto;
 import qr.dtos.DepartmentDto;
-import qr.dtos.UserDto;
 import qr.services.DepartmentService;
 import qr.services.UserService;
 
@@ -23,7 +21,14 @@ public class DepartmentController {
 
     @GetMapping("/all")
     public ResponseEntity<List<DepartmentDto>>getAllDptos(){
-        List<DepartmentDto> departmentDtos = departmentService.FindAll();
+        List<DepartmentDto> departmentDtos = departmentService.findAll();
+        return ResponseEntity.ok(departmentDtos);
+    }
+
+
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<List<DepartmentDto>> findByCompanyId(@PathVariable Long companyId){
+        List<DepartmentDto>departmentDtos = departmentService.findByCompanyId(companyId);
         return ResponseEntity.ok(departmentDtos);
     }
 

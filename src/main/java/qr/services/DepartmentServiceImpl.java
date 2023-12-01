@@ -7,6 +7,7 @@ import qr.entities.Department;
 import qr.mapper.MapperDto;
 import qr.repositories.DepartmentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,11 +44,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     //BUSCAR TODOS//
     @Override
-    public List<DepartmentDto> FindAll() {
+    public List<DepartmentDto> findAll() {
     return departmentRepository.findAll().stream().map(MapperDto::convertDepartmentEntityToDto)
             .collect(Collectors.toList());
     };
 
+    //BUSCAR POR ID DE COMPAÑIA
+
+    @Override
+    public List<DepartmentDto>findByCompanyId(Long id ){
+        List<Department> departments = departmentRepository.findAllByCompanyId(id);
+        List<DepartmentDto> departmentDtos = new ArrayList<>();
+        for (Department departmentEntity : departments){
+            DepartmentDto departmentDto = MapperDto.convertDepartmentEntityToDto(departmentEntity);
+            departmentDtos.add(departmentDto);
+        }
+        return departmentDtos;
+    }
 
     //GUARDAR//
     @Override

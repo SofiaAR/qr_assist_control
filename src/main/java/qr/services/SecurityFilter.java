@@ -44,7 +44,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            if (!request.getMethod().equals(HttpMethod.OPTIONS.name())
+           /* if (!request.getMethod().equals(HttpMethod.OPTIONS.name())
                     && !(request.getRequestURI().equals("/worker-assistance/save")
                     || request.getRequestURI().equals("/auth/login"))
             ) {
@@ -52,7 +52,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 verifyToken(token);
                 filterChain.doFilter(request, response);
                 return;
-            }
+            }*/
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -2,6 +2,9 @@ package qr.services;
 
 import qr.entities.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Test {
 
     // 1 - crear un metodo que reciba dos paramentros, un nombre y un apellido de tipo string y retorne el nombre y el apellido concatenados con un espacio entre los dos
@@ -57,7 +60,38 @@ public class Test {
 
     public static void main(String[] args) {
 
-        callAll();
+        testMap();
+
+    }
+
+    /*public static void main(String[] args) {
+        Integer total = 1;
+
+        for (int i = 0; i <= 20; i++) {
+            total = total + (total * i);
+            System.out.println(total);
+
+        }
+
+    }*/
+
+    public static void testMap() {
+        Map<String, Integer> edades = new HashMap<>(); // un mapa vacio de llave String y valor Integer
+
+        edades.put("sofia", 33);
+        edades.put("luna", 7);
+        edades.put("maite", 4);
+        edades.put("david", 34);
+
+        System.out.println("la edad de sofia es: " + edades.get("sofia"));
+
+        edades.forEach((key, value) -> {
+            System.out.println("key: " + key + " valor:" + value);
+
+        });
+
+
+
 
     }
 

@@ -8,9 +8,10 @@ import qr.repositories.UserRepository;
 import qr.repositories.WorkerAssistanceRepository;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 // Se debe agregar la anotacion @Service para que spring reconozca el servicio
 
@@ -107,4 +108,49 @@ public class WorkerAssistanceImpl implements WorkerAssistanceService {
 
         return totalHours;
     }
+
+    @Override
+    public Map<String,Integer> findAllWorkersByType(){
+
+        Map<String, Integer> totalHoursMap = new HashMap<>();
+
+        //LLAMAR TODOS LOS USUARIOS-ITERAR POR CADA USUARIO
+        List<User> allUsers = userRepository.findAll();
+        //ITERACION
+        for(int i = 1; i <=12 ; i++ ){
+
+            int totalHoursPerMonth = 0;
+
+            LocalDateTime firstDayOfMonth = LocalDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            LocalDateTime lastDayOfMonth = YearMonth.from(firstDayOfMonth).atEndOfMonth().atStartOfDay();
+
+            for(User user: allUsers){
+
+                int totalHoursForUser = 0;
+
+                if("trabajador".equalsIgnoreCase(user.getRol().getName())){
+                    List<WorkerAssistance> workerAssistances =  workerAssistanceRepository.findByUserAndEntranceBetween(user,firstDayOfMonth , lastDayOfMonth);
+                    for(WorkerAssistance w : workerAssistances) {
+
+                        long hours = w.getEntrance().until(w.getOut(), ChronoUnit.HOURS); //total horas de una asistencia
+
+                        totalHoursForUser =  totalHoursForUser + (int) hours; //se acumulan las horas en la variable totalhours
+
+                    }
+                    totalHoursPerMonth = totalHoursPerMonth + totalHoursForUser;
+                }
+            }
+
+            totalHoursMap.put(firstDayOfMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("ES")),totalHoursPerMonth);
+        }
+        return totalHoursMap;
+    }
+
+
+
+
+
+
 }
+
+
