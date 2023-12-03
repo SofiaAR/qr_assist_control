@@ -16,6 +16,8 @@ public interface DepartmentService {
 
     List<DepartmentDto>findByCompanyId(Long id);
 
+    void deleteByCompanyId(Long id);
+
     DepartmentDto save(DepartmentDto newDepartment);
 
     void update (DepartmentDto updateDepartment);

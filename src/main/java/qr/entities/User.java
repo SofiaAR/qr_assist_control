@@ -22,7 +22,7 @@ public class User {
     @JoinColumn(name = "user_rol")
     private Rol rol;
     private LocalDate contractDate;
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id")
     private Department department;
     private boolean active = true;

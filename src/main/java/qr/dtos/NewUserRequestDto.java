@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public class NewUserRequestDto {
 
+    private Long id;
     private String rut;
     private Integer numDocument;
     private String name;
@@ -79,5 +80,13 @@ public class NewUserRequestDto {
 
     public void setContractDate(LocalDate contractDate) {
         this.contractDate = contractDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -62,6 +62,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentDtos;
     }
 
+    @Override
+    public void deleteByCompanyId(Long id ){
+        List<Department> departments = departmentRepository.findAllByCompanyId(id);
+        for (Department departmentEntity : departments){
+           departmentRepository.delete(departmentEntity);
+        }
+    }
+
     //GUARDAR//
     @Override
     public DepartmentDto save(DepartmentDto departmentDto) {

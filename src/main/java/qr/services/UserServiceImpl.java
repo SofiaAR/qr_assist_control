@@ -2,7 +2,7 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qr.dtos.DepartmentDto;
+import org.springframework.transaction.annotation.Transactional;
 import qr.dtos.NewUserRequestDto;
 import qr.dtos.UserDto;
 import qr.entities.Department;
@@ -104,20 +104,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserDto dataForUpdate) { // y este es cmo guardar pero lo dejare igual como update
+    @Transactional
+    public void update(NewUserRequestDto dataForUpdate) { // y este es cmo guardar pero lo dejare igual como update
 
         //Ejecutar metodo del repositorio de ususario para obtener un ususario a traves de su id
         Optional<User> optionalUser = userRepository.findById(dataForUpdate.getId());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-
             user.setName(dataForUpdate.getName());
             user.setRut(dataForUpdate.getRut());
             user.setDocumentNumber(dataForUpdate.getNumDocument());
             user.setLastname(dataForUpdate.getLastName());
-            //user.setRol(dataForUpdate.getRolDto());
-            //user.setDepartment(dataForUpdate.getDepartmentDto());
+            user.setPassword(dataForUpdate.getPassword());
+            Rol rol = rolService.findById(dataForUpdate.getRolId());
+            user.setRol(rol);
+
+            Department department = departmentService.findById(dataForUpdate.getDepartmentId());
+            user.setDepartment(department);
 
             userRepository.save(user);
         }
@@ -128,8 +132,7 @@ public class UserServiceImpl implements UserService {
         //se declara variable de tipo optional se carga con los datos que retorna el metodo finbyid
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
-            User user = new User();
-            user = optionalUser.get();
+            User user = optionalUser.get();
             userRepository.delete(user);
         }
     }

@@ -22,7 +22,7 @@ public interface UserService {
 
     void save(NewUserRequestDto userDto);
 
-    void update (UserDto updateUser);
+    void update (NewUserRequestDto dataForUpdate);
 
     void delete(Long id);
 
