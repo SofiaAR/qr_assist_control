@@ -2,6 +2,7 @@ package qr.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import qr.dtos.CompanyDto;
 import qr.entities.Company;
 import qr.mapper.MapperDto;
@@ -78,15 +79,9 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        //se declara variable de tipo optional se carga con los datos que retorna el metodo finbyid
-        Optional<Company> optionalUser = companyRepository.findById(id);
-
-        if (optionalUser.isPresent()) {
-            Company company = new Company();
-            company = optionalUser.get();
-            companyRepository.delete(company);
-        }
+        companyRepository.deleteById(id);
     }
 
     @Override

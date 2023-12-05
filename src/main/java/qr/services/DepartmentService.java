@@ -1,11 +1,9 @@
 package qr.services;
 
 import qr.dtos.DepartmentDto;
-import qr.dtos.UserDto;
 import qr.entities.Department;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DepartmentService {
 
@@ -14,7 +12,11 @@ public interface DepartmentService {
     Department findById(Long id);
 
     //BUSCAR TODOS//
-    List<DepartmentDto> FindAll();
+    List<DepartmentDto> findAll();
+
+    List<DepartmentDto>findByCompanyId(Long id);
+
+    void deleteByCompanyId(Long id);
 
     DepartmentDto save(DepartmentDto newDepartment);
 

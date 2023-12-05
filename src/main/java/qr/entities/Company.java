@@ -2,6 +2,8 @@ package qr.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 public class Company {
@@ -13,6 +15,8 @@ public class Company {
     private String rut;
     private String turn; //giro
     private boolean active = true;
+    @OneToMany(orphanRemoval = true, mappedBy = "company", fetch = FetchType.LAZY)
+    private List<Department> departments;
 
     public Long getId() {
         return id;
@@ -52,5 +56,13 @@ public class Company {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
     }
 }

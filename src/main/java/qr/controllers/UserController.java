@@ -29,9 +29,8 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Void> update(@RequestBody UserDto userDto) {
-
-        userService.update(userDto);
+    public ResponseEntity<Void> update(@RequestBody NewUserRequestDto dataForUpdate) {
+        userService.update(dataForUpdate);
         return ResponseEntity.ok().build();
     }
 

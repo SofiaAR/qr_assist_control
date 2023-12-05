@@ -7,6 +7,7 @@ import qr.entities.Department;
 import qr.mapper.MapperDto;
 import qr.repositories.DepartmentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,11 +44,31 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     //BUSCAR TODOS//
     @Override
-    public List<DepartmentDto> FindAll() {
+    public List<DepartmentDto> findAll() {
     return departmentRepository.findAll().stream().map(MapperDto::convertDepartmentEntityToDto)
             .collect(Collectors.toList());
     };
 
+    //BUSCAR POR ID DE COMPAÑIA
+
+    @Override
+    public List<DepartmentDto>findByCompanyId(Long id ){
+        List<Department> departments = departmentRepository.findAllByCompanyId(id);
+        List<DepartmentDto> departmentDtos = new ArrayList<>();
+        for (Department departmentEntity : departments){
+            DepartmentDto departmentDto = MapperDto.convertDepartmentEntityToDto(departmentEntity);
+            departmentDtos.add(departmentDto);
+        }
+        return departmentDtos;
+    }
+
+    @Override
+    public void deleteByCompanyId(Long id ){
+        List<Department> departments = departmentRepository.findAllByCompanyId(id);
+        for (Department departmentEntity : departments){
+           departmentRepository.delete(departmentEntity);
+        }
+    }
 
     //GUARDAR//
     @Override
@@ -55,7 +76,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = new Department();
 
         department.setId(departmentDto.getId());
-        department.setName(department.getName());
+        department.setName(departmentDto.getName());
         // Asigna la compañía correspondiente a partir del DTO
         department.setCompany(companyService.findById(departmentDto.getCompanyDto().getId()));
 

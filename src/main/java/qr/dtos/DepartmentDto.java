@@ -1,7 +1,5 @@
 package qr.dtos;
 
-import qr.entities.Company;
-
 public class DepartmentDto {
     private Long id;
     private String name;
