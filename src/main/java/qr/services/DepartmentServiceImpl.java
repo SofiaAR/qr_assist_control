@@ -76,7 +76,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = new Department();
 
         department.setId(departmentDto.getId());
-        department.setName(department.getName());
+        department.setName(departmentDto.getName());
         // Asigna la compañía correspondiente a partir del DTO
         department.setCompany(companyService.findById(departmentDto.getCompanyDto().getId()));
 
